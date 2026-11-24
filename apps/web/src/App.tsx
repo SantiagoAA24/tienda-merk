@@ -7,6 +7,11 @@ import { LoginPage, RECOVER_PATH } from "@/pages/LoginPage";
 import { ProductFormPage } from "@/pages/products/ProductFormPage";
 import { ProductsPage } from "@/pages/products/ProductsPage";
 import { RecoverPasswordPage } from "@/pages/RecoverPasswordPage";
+import { CheckoutPage } from "@/pages/sale/CheckoutPage";
+import { CustomerPage } from "@/pages/sale/CustomerPage";
+import { SaleDonePage } from "@/pages/sale/SaleDonePage";
+import { SalePage } from "@/pages/sale/SalePage";
+import { WeightPage } from "@/pages/sale/WeightPage";
 
 export function App() {
   return (
@@ -25,6 +30,11 @@ export function App() {
           path="/productos/:id/editar"
           element={<ProductFormPage mode="edit" />}
         />
+        <Route path="/venta" element={<SalePage />} />
+        <Route path="/venta/peso/:productId" element={<WeightPage />} />
+        <Route path="/venta/cobrar" element={<CheckoutPage />} />
+        <Route path="/venta/cliente" element={<CustomerPage />} />
+        <Route path="/venta/lista/:saleId" element={<SaleDonePage />} />
       </Route>
     </Routes>
   );

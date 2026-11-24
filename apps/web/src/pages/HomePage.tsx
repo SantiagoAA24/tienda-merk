@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "@/auth/context";
 import { AppShell, Button, Card, Header } from "@/components";
@@ -8,6 +9,7 @@ const ROLE_LABEL = { admin: "Administrador", seller: "Vendedor" } as const;
 /** Provisional home until screen 12 (Inicio) is built. */
 export function HomePage() {
   const { state, logout } = useAuth();
+  const navigate = useNavigate();
   const [leaving, setLeaving] = useState(false);
 
   if (state.status !== "authenticated") {
@@ -31,6 +33,9 @@ export function HomePage() {
               vuelva el internet.
             </p>
           ) : null}
+          <Button variant="primary" onClick={() => navigate("/venta")}>
+            Nueva venta
+          </Button>
           <Button
             variant="secondary"
             onClick={() => void handleLogout()}
