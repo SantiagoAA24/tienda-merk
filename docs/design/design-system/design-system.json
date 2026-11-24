@@ -1,0 +1,23 @@
+{
+"v": 3,
+"layout": "files",
+"createdOnFiles": {"v": 1, "at": "2026-11-22T21:35:00Z"},
+"title": "Tienda Express Merk — Sistema de diseño",
+"namespace": "TEM",
+"libraries": [],
+"sections": {},
+"groups": ["Logo"],
+"assetGroups": {
+"Logo": {
+"name": "Logo",
+"tile": "l",
+"order": ["logo-tienda-express-merk.png"],
+"files": {
+"logo-tienda-express-merk.png": {"name": "logo-tienda-express-merk.png", "blob": "0c762fee549e0c8b139b0a05af52ca73", "size": 2206277, "type": "image/png"}
+}
+}
+},
+"blobs": {},
+"docs": {"readme": "project/README.md", "sections": []},
+"lastChange": {"by": "Santiago", "at": "2026-11-22T21:35:00Z", "via": "Claude (chat)", "note": "Sistema de diseño inicial a partir de la dirección A del panel inicial."}
+}

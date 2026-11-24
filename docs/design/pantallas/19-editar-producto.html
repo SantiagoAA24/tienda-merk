@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Editar producto</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{text-decoration:none;color:inherit}
+button,input{font-family:inherit}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;background:#F4F7EA;display:flex;flex-direction:column;font-family:'Nunito',system-ui,sans-serif;color:#17301D;overflow:hidden">
+
+<div style="padding:16px 16px 0;display:flex;align-items:center;gap:12px">
+<a href="Productos.dc.html" aria-label="Cerrar" style="width:44px;height:44px;box-sizing:border-box;border-radius:14px;border:2px solid #DDE8BE;background:#FFFFFF;color:#0F4A1C;display:flex;align-items:center;justify-content:center;flex:none"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></a>
+<h1 style="margin:0;flex:1;font-family:'Baloo 2','Nunito',sans-serif;font-size:24px;line-height:28px;font-weight:800;color:#0F4A1C">Editar producto</h1>
+</div>
+
+<div style="margin:16px 16px 0;display:flex;flex-direction:column;gap:16px">
+
+<div style="display:flex;flex-direction:column;gap:6px">
+<label for="nombre" style="font-size:14px;line-height:20px;font-weight:800">Nombre del producto</label>
+<input id="nombre" type="text" value="Papa pastusa" style="width:100%;box-sizing:border-box;height:52px;border:2px solid #6F8574;border-radius:14px;padding:0 14px;font-size:17px;font-weight:700;color:#17301D;background:#FFFFFF">
+</div>
+
+<div style="display:flex;flex-direction:column;gap:6px">
+<span id="tipo" style="font-size:14px;line-height:20px;font-weight:800">Tipo de precio</span>
+<div role="group" aria-labelledby="tipo" style="display:flex;border:2px solid #1A6B2B;border-radius:14px;overflow:hidden">
+<button aria-pressed="false" style="flex:1;min-height:48px;border:0;background:#FFFFFF;color:#0F4A1C;font-size:15px;font-weight:800">Precio fijo</button>
+<button aria-pressed="true" style="flex:1;min-height:48px;border:0;background:#1A6B2B;color:#FFFFFF;font-size:15px;font-weight:800">Por peso</button>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+<div style="display:flex;flex-direction:column;gap:6px">
+<label for="precio" style="font-size:14px;line-height:20px;font-weight:800">Precio por kg</label>
+<input id="precio" type="text" inputmode="numeric" value="4500" style="width:100%;box-sizing:border-box;height:52px;border:2px solid #6F8574;border-radius:14px;padding:0 14px;font-size:17px;font-weight:700;color:#17301D;background:#FFFFFF">
+</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<span id="unidad" style="font-size:14px;line-height:20px;font-weight:800">Unidad</span>
+<div role="group" aria-labelledby="unidad" style="display:flex;height:52px;box-sizing:border-box;border:2px solid #1A6B2B;border-radius:14px;overflow:hidden">
+<button aria-pressed="false" style="flex:1;border:0;background:#FFFFFF;color:#0F4A1C;font-size:15px;font-weight:800">g</button>
+<button aria-pressed="true" style="flex:1;border:0;background:#1A6B2B;color:#FFFFFF;font-size:15px;font-weight:800">kg</button>
+<button aria-pressed="false" style="flex:1;border:0;background:#FFFFFF;color:#0F4A1C;font-size:15px;font-weight:800">lb</button>
+</div>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:6px">
+<span id="iva" style="font-size:14px;line-height:20px;font-weight:800">Impuesto (IVA)</span>
+<div role="group" aria-labelledby="iva" style="display:flex;border:2px solid #1A6B2B;border-radius:14px;overflow:hidden">
+<button aria-pressed="true" style="flex:1;min-height:48px;border:0;background:#1A6B2B;color:#FFFFFF;font-size:14px;font-weight:800">Excluido</button>
+<button aria-pressed="false" style="flex:1;min-height:48px;border:0;background:#FFFFFF;color:#0F4A1C;font-size:14px;font-weight:800">Exento</button>
+<button aria-pressed="false" style="flex:1;min-height:48px;border:0;background:#FFFFFF;color:#0F4A1C;font-size:14px;font-weight:800">5%</button>
+<button aria-pressed="false" style="flex:1;min-height:48px;border:0;background:#FFFFFF;color:#0F4A1C;font-size:14px;font-weight:800">19%</button>
+</div>
+<span style="font-size:13px;line-height:18px;font-weight:600;color:#4F6554">Si no estás seguro de cuál aplica, pregúntale a tu contador.</span>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:6px">
+<label for="costo" style="font-size:14px;line-height:20px;font-weight:800">Costo por kg (opcional)</label>
+<input id="costo" type="text" inputmode="numeric" placeholder="Para calcular tu ganancia" style="width:100%;box-sizing:border-box;height:52px;border:2px solid #6F8574;border-radius:14px;padding:0 14px;font-size:17px;font-weight:700;color:#17301D;background:#FFFFFF">
+</div>
+
+</div>
+
+<div style="margin:auto 16px 22px">
+<a href="Productos.dc.html" style="display:flex;align-items:center;justify-content:center;min-height:48px;margin:0 16px 10px;border-radius:22px;border:2px solid #B3261E;color:#B3261E;font-family:'Baloo 2','Nunito',sans-serif;font-size:17px;font-weight:800;background:#FFFFFF">Desactivar producto</a>
+<a href="Productos.dc.html" style="display:flex;align-items:center;justify-content:center;gap:10px;height:68px;border-radius:22px;background:#B4E01B;color:#0F4A1C;box-shadow:0 5px 0 #7FA312;font-family:'Baloo 2','Nunito',sans-serif;font-size:23px;font-weight:800">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>
+Guardar producto
+</a>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

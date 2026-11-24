@@ -1,0 +1,35 @@
+<!-- @dsCard group="Formularios" height=420 -->
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</head>
+<body>
+<div class="tem-app" style="width:390px;padding:20px;display:flex;flex-direction:column;gap:18px">
+<div class="tem-field">
+<label class="tem-field__label" for="f-nombre">Nombre del producto</label>
+<input class="tem-input" id="f-nombre" type="text" value="Papa pastusa">
+</div>
+<div class="tem-field">
+<span class="tem-field__label" id="f-tipo">Tipo de precio</span>
+<div class="tem-segmented" role="group" aria-labelledby="f-tipo">
+<button type="button" aria-pressed="false">Precio fijo</button>
+<button type="button" aria-pressed="true">Por peso</button>
+</div>
+</div>
+<div class="tem-field">
+<label class="tem-field__label" for="f-precio">Precio por kg</label>
+<input class="tem-input" id="f-precio" type="text" inputmode="numeric" value="3200">
+<span class="tem-field__hint">Se muestra como $3.200 / kg</span>
+</div>
+<div class="tem-field tem-field--error">
+<label class="tem-field__label" for="f-error">Precio por lb</label>
+<input class="tem-input" id="f-error" type="text" inputmode="numeric" value="3.1" aria-invalid="true" aria-describedby="f-error-msg">
+<span class="tem-field__error" id="f-error-msg"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>Escribe el precio sin puntos ni comas</span>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+html,body{margin:0}
+body{width:960px;height:288px;position:relative;overflow:hidden;background:var(--surface-page)}
+svg{position:absolute;left:0;top:0;display:block}
+.b-dark{fill:var(--green-900)}
+.b-lime{fill:var(--lime-500)}
+.b-green{fill:var(--green-700)}
+.b-yellow{fill:var(--yellow-400)}
+.d-lime{fill:var(--lime-500)}
+.d-dark{fill:var(--green-900)}
+.d-pale{fill:var(--lime-200)}
+.d-wood{fill:var(--wood-ink)}
+h1{position:absolute;left:40px;bottom:50px;margin:0;font-family:var(--font-display);font-weight:800;font-size:64px;line-height:.95;color:var(--ink);white-space:nowrap}
+p{position:absolute;left:40px;bottom:22px;margin:0;font-family:var(--font-sans);font-weight:600;font-size:14px;line-height:20px;color:var(--ink-muted)}
+</style>
+</head>
+<body>
+<svg width="960" height="288" viewBox="0 0 960 288" aria-hidden="true">
+<!--
+Bloques: green-900 320×152, lime-500 224×152, green-700 256×152, yellow-400 160×152 (franja de cuatro bandas desiguales, sangrando por arriba; esquinas inferiores radius-2xl 28).
+Disposición: tira horizontal de 112px a todo el ancho sobre el nombre, porque "Tienda Express Merk" no cabe en 440px.
+Patrón: discos (pitch space-8 = 32, radio 10), porque la marca es redonda y fresca como el logo (frutas, hojas, esquinas muy redondeadas); dos filas de discos por bloque en el tono contrario.
+Pasos y radios usados: space-8 (32) como paso del patrón, radius-2xl (28) en los bloques.
+-->
+<defs>
+<pattern id="p-lime" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="16" cy="16" r="10" class="d-lime"/></pattern>
+<pattern id="p-dark" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="16" cy="16" r="10" class="d-dark"/></pattern>
+<pattern id="p-pale" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="16" cy="16" r="10" class="d-pale"/></pattern>
+<pattern id="p-wood" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="16" cy="16" r="10" class="d-wood"/></pattern>
+</defs>
+<rect x="0" y="-40" width="320" height="152" rx="28" class="b-dark"/>
+<rect x="320" y="-40" width="224" height="152" rx="28" class="b-lime"/>
+<rect x="544" y="-40" width="256" height="152" rx="28" class="b-green"/>
+<rect x="800" y="-40" width="160" height="152" rx="28" class="b-yellow"/>
+<rect x="0" y="32" width="320" height="64" fill="url(#p-lime)"/>
+<rect x="320" y="32" width="224" height="64" fill="url(#p-dark)"/>
+<rect x="544" y="32" width="256" height="64" fill="url(#p-pale)"/>
+<rect x="800" y="32" width="160" height="64" fill="url(#p-wood)"/>
+</svg>
+<h1>Tienda Express Merk</h1>
+<p>Frescura que se ve, calidad que se siente</p>
+</body>
+</html>
