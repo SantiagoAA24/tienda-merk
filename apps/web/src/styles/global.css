@@ -1,5 +1,6 @@
 @import "./tokens.css";
 @import "../../../../docs/design/design-system/components/bundle.css";
+@import "./components.css";
 
 *,
 *::before,

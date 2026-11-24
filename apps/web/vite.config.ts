@@ -8,6 +8,17 @@ const rootDir = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   plugins: [react()],
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://127.0.0.1:8000",
+        changeOrigin: true,
+        rewrite: (url) => url.replace(/^\/api/, ""),
+        // The API scopes the refresh cookie to /auth; the browser sees /api/auth.
+        cookiePathRewrite: { "/auth": "/api/auth" },
+      },
+    },
+  },
   resolve: {
     alias: {
       "@": path.resolve(rootDir, "src"),

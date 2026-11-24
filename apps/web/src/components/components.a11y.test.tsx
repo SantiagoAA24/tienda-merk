@@ -1,8 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 
+import { Alert } from "./Alert";
+import { AuthCover } from "./AuthCover";
+import { BackHeader } from "./BackHeader";
 import { BottomNav } from "./BottomNav";
+import { Checkbox } from "./Checkbox";
+import { PasswordField } from "./PasswordField";
 import { Button, IconButton } from "./Button";
 import { StatusChip } from "./Chip";
 import { Field } from "./Field";
@@ -180,5 +186,64 @@ describe("design system accessibility", () => {
     expect(screen.getByRole("button", { name: "L: $10.000" })).toHaveFocus();
     await user.click(today);
     expect(onSelectDay).toHaveBeenCalledWith(1);
+  });
+
+  it("Alert announces the error with text", () => {
+    render(<Alert>Usuario o contraseña incorrectos.</Alert>);
+
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Usuario o contraseña incorrectos.",
+    );
+  });
+
+  it("Checkbox is a labelled, focusable checkbox", async () => {
+    const user = userEvent.setup();
+    render(<Checkbox defaultChecked>Mantener sesión en este celular</Checkbox>);
+
+    const checkbox = screen.getByRole("checkbox", {
+      name: "Mantener sesión en este celular",
+    });
+    expect(checkbox).toBeChecked();
+    await user.tab();
+    expect(checkbox).toHaveFocus();
+    await user.keyboard(" ");
+    expect(checkbox).not.toBeChecked();
+  });
+
+  it("PasswordField labels the input and the visibility toggle", async () => {
+    const user = userEvent.setup();
+    render(<PasswordField label="Contraseña" invalid />);
+
+    const input = screen.getByLabelText("Contraseña");
+    expect(input).toHaveAttribute("type", "password");
+    expect(input).toHaveAttribute("aria-invalid", "true");
+    await user.click(
+      screen.getByRole("button", { name: "Mostrar contraseña" }),
+    );
+    expect(input).toHaveAttribute("type", "text");
+  });
+
+  it("BackHeader has a labelled back link and a heading", () => {
+    render(
+      <MemoryRouter>
+        <BackHeader title="Recuperar contraseña" to="/iniciar-sesion" />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByRole("link", { name: "Volver" })).toHaveAttribute(
+      "href",
+      "/iniciar-sesion",
+    );
+    expect(
+      screen.getByRole("heading", { name: "Recuperar contraseña" }),
+    ).toBeInTheDocument();
+  });
+
+  it("AuthCover shows the brand as a heading", () => {
+    render(<AuthCover />);
+
+    expect(
+      screen.getByRole("heading", { name: "Tienda Express Merk" }),
+    ).toBeInTheDocument();
   });
 });

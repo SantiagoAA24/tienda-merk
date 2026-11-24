@@ -141,3 +141,60 @@ export function IconMore({ size = 22, ...props }: IconProps) {
     </svg>
   );
 }
+
+export function IconBag({ size = 40, strokeWidth = 2.2, ...props }: IconProps) {
+  return (
+    <svg {...baseProps(size, strokeWidth, props)}>
+      <path d="M5 9h14l-1.2 10a1 1 0 0 1-1 .9H7.2a1 1 0 0 1-1-.9z" />
+      <path d="M9 9V7a3 3 0 0 1 6 0v2" />
+    </svg>
+  );
+}
+
+export function IconEye({ size = 22, strokeWidth = 2.2, ...props }: IconProps) {
+  return (
+    <svg {...baseProps(size, strokeWidth, props)}>
+      <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+}
+
+export function IconEyeOff({
+  size = 22,
+  strokeWidth = 2.2,
+  ...props
+}: IconProps) {
+  return (
+    <svg {...baseProps(size, strokeWidth, props)}>
+      <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" />
+      <circle cx="12" cy="12" r="3" />
+      <path d="M4 4l16 16" />
+    </svg>
+  );
+}
+
+export function IconAlert({
+  size = 20,
+  strokeWidth = 2.6,
+  ...props
+}: IconProps) {
+  return (
+    <svg {...baseProps(size, strokeWidth, props)}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7.5v5.5M12 16.5v.1" />
+    </svg>
+  );
+}
+
+export function IconBack({
+  size = 22,
+  strokeWidth = 2.4,
+  ...props
+}: IconProps) {
+  return (
+    <svg {...baseProps(size, strokeWidth, props)}>
+      <path d="M15 5l-7 7 7 7" />
+    </svg>
+  );
+}

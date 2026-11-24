@@ -1,4 +1,9 @@
+export { Alert, type AlertProps } from "./Alert";
+export { AuthCover, type AuthCoverProps } from "./AuthCover";
+export { BackHeader, type BackHeaderProps } from "./BackHeader";
 export { BottomNav, type BottomNavProps, type BottomNavTab } from "./BottomNav";
+export { Checkbox, type CheckboxProps } from "./Checkbox";
+export { PasswordField, type PasswordFieldProps } from "./PasswordField";
 export {
   Button,
   IconButton,

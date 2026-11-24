@@ -41,10 +41,13 @@ cd apps/api
 cp .env.example .env
 uv sync
 uv run alembic upgrade head
+SEED_ADMIN_PASSWORD='una-clave-larga' uv run python -m app.seed
 uv run uvicorn app.main:app --reload --app-dir src
 ```
 
-La API queda en `http://localhost:8000`. Health: `GET /health`.
+La API queda en `http://localhost:8000`. Health: `GET /health`. El seed crea el negocio, el usuario `admin` (o `SEED_ADMIN_USERNAME`) y 10 productos de ejemplo; se puede correr varias veces sin duplicar.
+
+En desarrollo la web llama a la API por el proxy de Vite (`/api` → `http://127.0.0.1:8000`), así la cookie de sesión queda en el mismo origen. Fuera de desarrollo `JWT_SECRET` es obligatorio (ver `apps/api/.env.example`).
 
 Scripts útiles:
 
