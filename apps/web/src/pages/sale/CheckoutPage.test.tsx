@@ -55,10 +55,13 @@ describe("CheckoutPage", () => {
     );
 
     expect(
-      await screen.findByRole("heading", { name: "Venta registrada" }),
+      await screen.findByRole("heading", { name: "Venta guardada" }),
     ).toBeInTheDocument();
     expect(screen.getByText("Por reenviar")).toBeInTheDocument();
-    expect(screen.getByText(/Venta V-0001/)).toBeInTheDocument();
+    expect(screen.getByText("V-0001")).toBeInTheDocument();
+    expect(
+      screen.getByText(/Sin internet · las ventas se guardan/i),
+    ).toBeInTheDocument();
 
     const sales = await listLocalSales();
     expect(sales).toHaveLength(1);
@@ -80,7 +83,7 @@ describe("CheckoutPage", () => {
       screen.getByRole("button", { name: /Cobrar y facturar/i }),
     );
     expect(
-      await screen.findByRole("heading", { name: "Venta registrada" }),
+      await screen.findByRole("heading", { name: "Venta guardada" }),
     ).toBeInTheDocument();
   });
 });

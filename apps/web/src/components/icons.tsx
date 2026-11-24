@@ -187,6 +187,18 @@ export function IconAlert({
   );
 }
 
+export function IconOffline({
+  size = 20,
+  strokeWidth = 2.4,
+  ...props
+}: IconProps) {
+  return (
+    <svg {...baseProps(size, strokeWidth, props)}>
+      <path d="M2 8.8a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 19.5v.1M3 3l18 18" />
+    </svg>
+  );
+}
+
 export function IconBack({
   size = 22,
   strokeWidth = 2.4,

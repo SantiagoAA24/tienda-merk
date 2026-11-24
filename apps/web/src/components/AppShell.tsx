@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { BottomNav, type BottomNavTab } from "./BottomNav";
 import { cx } from "./cx";
+import { PendingSyncHint } from "./PendingSyncHint";
 
 const TAB_PATH: Partial<Record<BottomNavTab, string>> = {
   inicio: "/",
@@ -20,6 +21,7 @@ export function AppShell({ active, children, className }: AppShellProps) {
 
   return (
     <div className={cx("tem-app", "tem-shell", className)}>
+      <PendingSyncHint />
       <div className="tem-shell__body">{children}</div>
       <BottomNav
         active={active}

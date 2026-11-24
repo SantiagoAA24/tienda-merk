@@ -9,6 +9,7 @@ import { createSaleFromCart } from "@/db/sales";
 import { formatMoney, formatQuantity } from "@/lib/format";
 import { saleTotals } from "@/lib/pricing";
 import { parseMoneyInput } from "@/products/validation";
+import { syncPendingSales } from "@/sales/sync";
 import {
   PAYMENT_LABELS,
   type CartDraft,
@@ -99,6 +100,7 @@ export function CheckoutPage() {
         setError(result.error);
         return;
       }
+      void syncPendingSales().catch(() => undefined);
       navigate(`/venta/lista/${result.sale.id}`);
     } finally {
       setSaving(false);

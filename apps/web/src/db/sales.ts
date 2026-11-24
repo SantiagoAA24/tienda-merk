@@ -1,5 +1,5 @@
 import { saleTotals } from "@/lib/pricing";
-import type { LocalSale, LocalSaleLine } from "@/sales/types";
+import type { LocalSale, LocalSaleLine, LocalInvoiceStatus } from "@/sales/types";
 
 import { clearCart, getCart } from "./cart";
 import { db } from "./schema";
@@ -23,6 +23,44 @@ export async function getSaleById(id: string): Promise<LocalSale | undefined> {
 
 export async function listLocalSales(): Promise<LocalSale[]> {
   return db.sales.orderBy("soldAt").reverse().toArray();
+}
+
+export async function listPendingSales(): Promise<LocalSale[]> {
+  return db.sales
+    .where("syncStatus")
+    .anyOf(["pending", "error"])
+    .sortBy("soldAt");
+}
+
+export async function countPendingSales(): Promise<number> {
+  return db.sales.where("syncStatus").anyOf(["pending", "error"]).count();
+}
+
+export async function markSaleSynced(
+  id: string,
+  patch: {
+    invoiceNumber: string | null;
+    invoiceStatus: LocalInvoiceStatus;
+  },
+): Promise<void> {
+  const sale = await db.sales.get(id);
+  if (!sale) return;
+  await db.sales.put({
+    ...sale,
+    syncStatus: "synced",
+    invoiceNumber: patch.invoiceNumber,
+    invoiceStatus: patch.invoiceStatus,
+    serverInvoiceStatus: patch.invoiceStatus,
+  });
+}
+
+export async function markSaleSyncError(id: string): Promise<void> {
+  const sale = await db.sales.get(id);
+  if (!sale) return;
+  await db.sales.put({
+    ...sale,
+    syncStatus: "error",
+  });
 }
 
 export type CreateSaleResult =

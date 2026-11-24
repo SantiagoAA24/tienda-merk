@@ -3,7 +3,14 @@ import "fake-indexeddb/auto";
 import { beforeEach, describe, expect, it } from "vitest";
 
 import { addFixedLine, addWeightLine, getCart, updateCheckoutDraft } from "./cart";
-import { createSaleFromCart, getSaleById, nextInternalNumber } from "./sales";
+import {
+  countPendingSales,
+  createSaleFromCart,
+  getSaleById,
+  listPendingSales,
+  markSaleSynced,
+  nextInternalNumber,
+} from "./sales";
 import { db } from "./schema";
 
 beforeEach(async () => {
@@ -70,5 +77,33 @@ describe("sales", () => {
     });
     const result = await createSaleFromCart();
     expect(result.ok).toBe(false);
+  });
+
+  it("lists and marks pending sales as synced", async () => {
+    await addFixedLine({
+      productId: "p1",
+      name: "Huevos AA",
+      unitPricePesos: 600,
+      iva: "excluido",
+    });
+    await updateCheckoutDraft({
+      paymentMethod: "transfer",
+      cashReceivedPesos: null,
+    });
+    const result = await createSaleFromCart();
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+
+    expect(await countPendingSales()).toBe(1);
+    expect(await listPendingSales()).toHaveLength(1);
+
+    await markSaleSynced(result.sale.id, {
+      invoiceNumber: "FE-0042",
+      invoiceStatus: "pending",
+    });
+    expect(await countPendingSales()).toBe(0);
+    const stored = await getSaleById(result.sale.id);
+    expect(stored?.syncStatus).toBe("synced");
+    expect(stored?.invoiceNumber).toBe("FE-0042");
   });
 });

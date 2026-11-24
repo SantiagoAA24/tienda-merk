@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 import { ProductsSync } from "@/products/ProductsSync";
+import { SalesSync } from "@/sales/SalesSync";
 
 import type { Role } from "./api";
 import { useAuth } from "./context";
@@ -32,6 +33,7 @@ export function RequireAuth({ children }: { children?: ReactNode }) {
   return (
     <>
       <ProductsSync />
+      <SalesSync />
       {children ?? <Outlet />}
     </>
   );

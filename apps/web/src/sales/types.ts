@@ -2,7 +2,9 @@ import type { Iva, PriceType, Unit } from "@/products/types";
 
 export type PaymentMethod = "cash" | "transfer" | "card";
 
-export type SyncStatus = "pending";
+export type SyncStatus = "pending" | "synced" | "error";
+
+export type LocalInvoiceStatus = "pending" | "sent" | "accepted" | "rejected";
 
 export type CustomerDocType = "cc" | "nit" | "other";
 
@@ -63,9 +65,11 @@ export type LocalSale = {
   changePesos: number | null;
   customerMode: "final" | "named";
   customer: SaleCustomer | null;
-  /** Local invoice status until sync; always pending in this phase. */
-  invoiceStatus: "pending";
+  invoiceStatus: LocalInvoiceStatus;
   syncStatus: SyncStatus;
+  /** Assigned by the server after a successful sync (e.g. FE-0232). */
+  invoiceNumber?: string | null;
+  serverInvoiceStatus?: LocalInvoiceStatus | null;
 };
 
 export type CounterRecord = {

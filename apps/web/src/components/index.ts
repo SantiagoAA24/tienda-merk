@@ -1,5 +1,6 @@
 export { Alert, type AlertProps } from "./Alert";
 export { AppShell, type AppShellProps } from "./AppShell";
+export { PendingSyncHint } from "./PendingSyncHint";
 export { AuthCover, type AuthCoverProps } from "./AuthCover";
 export { BackHeader, type BackHeaderProps } from "./BackHeader";
 export { BottomNav, type BottomNavProps, type BottomNavTab } from "./BottomNav";
