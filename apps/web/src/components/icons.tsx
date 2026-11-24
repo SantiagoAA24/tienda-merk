@@ -198,3 +198,28 @@ export function IconBack({
     </svg>
   );
 }
+
+export function IconSearch({
+  size = 22,
+  strokeWidth = 2.2,
+  ...props
+}: IconProps) {
+  return (
+    <svg {...baseProps(size, strokeWidth, props)}>
+      <circle cx="11" cy="11" r="6.5" />
+      <path d="M16 16l4 4" />
+    </svg>
+  );
+}
+
+export function IconChevron({
+  size = 18,
+  strokeWidth = 2.6,
+  ...props
+}: IconProps) {
+  return (
+    <svg {...baseProps(size, strokeWidth, props)}>
+      <path d="M9 5l7 7-7 7" />
+    </svg>
+  );
+}

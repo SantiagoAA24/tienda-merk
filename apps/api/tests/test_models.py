@@ -16,30 +16,12 @@ from app.models import (
     Iva,
     Outbox,
     OutboxStatus,
-    PriceType,
-    Product,
     Role,
     Sale,
     SaleLine,
     Unit,
 )
-from factories import make_business, make_user
-
-
-def make_product(db: Session, business: Business, **overrides: object) -> Product:
-    values: dict[str, object] = {
-        "business_id": business.id,
-        "name": "Papa pastusa",
-        "price_type": PriceType.WEIGHT,
-        "price": Decimal("3200"),
-        "unit": Unit.KILOGRAM,
-        "iva": Iva.EXCLUDED,
-    }
-    values.update(overrides)
-    product = Product(**values)
-    db.add(product)
-    db.flush()
-    return product
+from factories import make_business, make_product, make_user
 
 
 def make_sale(

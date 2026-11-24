@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
+import { ProductsSync } from "@/products/ProductsSync";
+
 import type { Role } from "./api";
 import { useAuth } from "./context";
 
@@ -27,7 +29,12 @@ export function RequireAuth({ children }: { children?: ReactNode }) {
     const from = `${location.pathname}${location.search}`;
     return <Navigate to={LOGIN_PATH} replace state={{ from }} />;
   }
-  return children ?? <Outlet />;
+  return (
+    <>
+      <ProductsSync />
+      {children ?? <Outlet />}
+    </>
+  );
 }
 
 export function RequireRole({

@@ -1,6 +1,8 @@
+from decimal import Decimal
+
 from sqlalchemy.orm import Session
 
-from app.models import Business, Role, User
+from app.models import Business, Iva, PriceType, Product, Role, Unit, User
 from app.security import hash_password
 
 DEFAULT_PASSWORD = "clave-segura-123"
@@ -33,3 +35,19 @@ def make_user(
     db.add(user)
     db.flush()
     return user
+
+
+def make_product(db: Session, business: Business, **overrides: object) -> Product:
+    values: dict[str, object] = {
+        "business_id": business.id,
+        "name": "Papa pastusa",
+        "price_type": PriceType.WEIGHT,
+        "price": Decimal("3200"),
+        "unit": Unit.KILOGRAM,
+        "iva": Iva.EXCLUDED,
+    }
+    values.update(overrides)
+    product = Product(**values)
+    db.add(product)
+    db.flush()
+    return product
