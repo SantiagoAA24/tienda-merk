@@ -1,0 +1,50 @@
+/* Generated from docs/design/design-system/tokens.json — do not edit. */
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@500;600;700;800&display=swap");
+
+:root {
+  --green-900: #0F4A1C;
+  --green-700: #1A6B2B;
+  --lime-500: #B4E01B;
+  --lime-700: #7FA312;
+  --lime-200: #D4F28A;
+  --lime-100: #EAF7C2;
+  --yellow-400: #FFE23A;
+  --yellow-ink: #3A2A00;
+  --wood-300: #EAD7B8;
+  --wood-ink: #4A2D0F;
+  --surface-page: #F4F7EA;
+  --surface-card: #FFFFFF;
+  --border-card: #DDE8BE;
+  --border-dashed: #E3EBCB;
+  --track: #E8EFD3;
+  --border-input: #6F8574;
+  --ink: #17301D;
+  --ink-muted: #4F6554;
+  --on-green: #FFFFFF;
+  --chart-bar: #3C814B;
+  --chart-empty: #B9C79A;
+  --danger: #B3261E;
+  --danger-100: #FBE4E1;
+  --focus-ring: #0F4A1C;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 24px;
+  --radius-2xl: 28px;
+  --radius-pill: 999px;
+  --shadow-card: 0 6px 0 rgba(15, 74, 28, 0.07);
+  --shadow-cta: 0 5px 0 #7fa312;
+  --size-touch: 44px;
+  --size-cta: 68px;
+  --size-nav-item: 56px;
+  --size-frame: 390px;
+  --font-display: "Baloo 2", "Nunito", system-ui, sans-serif;
+  --font-sans: "Nunito", system-ui, sans-serif;
+}
