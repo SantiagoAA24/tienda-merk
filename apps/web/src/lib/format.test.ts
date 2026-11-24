@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   formatInvoiceNumber,
+  formatLongDate,
   formatMoney,
   formatProductPrice,
   formatQuantity,
@@ -51,6 +52,13 @@ describe("formatShortDate", () => {
   it("formats short Colombian Spanish date", () => {
     const date = new Date(2025, 10, 21, 12, 0, 0);
     expect(formatShortDate(date)).toBe("Vie 21 nov");
+  });
+});
+
+describe("formatLongDate", () => {
+  it("formats long Colombian Spanish date", () => {
+    const date = new Date("2026-11-21T15:00:00-05:00");
+    expect(formatLongDate(date)).toMatch(/sábado.*21.*noviembre/i);
   });
 });
 

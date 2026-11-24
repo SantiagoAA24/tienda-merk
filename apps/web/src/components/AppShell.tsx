@@ -5,9 +5,11 @@ import { BottomNav, type BottomNavTab } from "./BottomNav";
 import { cx } from "./cx";
 import { PendingSyncHint } from "./PendingSyncHint";
 
-const TAB_PATH: Partial<Record<BottomNavTab, string>> = {
+const TAB_PATH: Record<BottomNavTab, string> = {
   inicio: "/",
   productos: "/productos",
+  ventas: "/ventas",
+  mas: "/mas",
 };
 
 export type AppShellProps = {

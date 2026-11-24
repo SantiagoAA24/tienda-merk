@@ -1,5 +1,12 @@
 import { saleTotals } from "@/lib/pricing";
-import type { LocalSale, LocalSaleLine, LocalInvoiceStatus } from "@/sales/types";
+import type { SaleLineApi, SaleOut } from "@/sales/api";
+import type {
+  LocalSale,
+  LocalSaleLine,
+  LocalInvoiceStatus,
+  PaymentMethod,
+} from "@/sales/types";
+import type { Iva, Unit } from "@/products/types";
 
 import { clearCart, getCart } from "./cart";
 import { db } from "./schema";
@@ -115,4 +122,125 @@ export async function createSaleFromCart(): Promise<CreateSaleResult> {
   });
 
   return { ok: true, sale };
+}
+
+function moneyToPesos(value: string): number {
+  return Math.round(Number(value));
+}
+
+function mapRemoteLines(lines: SaleLineApi[] | undefined): LocalSaleLine[] {
+  if (!lines || lines.length === 0) return [];
+  return lines.map((line, index) => {
+    const quantity = Number(line.quantity);
+    return {
+      id: `${line.product_id ?? "line"}-${index}`,
+      productId: line.product_id ?? "",
+      name: line.product_name,
+      unitPricePesos: moneyToPesos(line.unit_price),
+      quantityMillis: Math.round(quantity * 1000),
+      unit: line.unit as Unit,
+      priceType: "fixed",
+      priceUnit: line.unit as Unit,
+      iva: line.iva as Iva,
+      lineTotal: moneyToPesos(line.line_total),
+    };
+  });
+}
+
+function asPaymentMethod(value: string): PaymentMethod {
+  if (value === "transfer" || value === "card" || value === "cash") {
+    return value;
+  }
+  return "cash";
+}
+
+/**
+ * Merges a server sale into IndexedDB.
+ * Pending local rows are only updated with invoice metadata after sync.
+ * Remote-only sales are inserted as synced.
+ */
+export async function upsertRemoteSale(remote: SaleOut): Promise<void> {
+  const existing = await db.sales.get(remote.id);
+  const invoiceStatus: LocalInvoiceStatus =
+    remote.invoice?.status ?? existing?.invoiceStatus ?? "pending";
+  const invoiceNumber =
+    remote.invoice?.number ?? existing?.invoiceNumber ?? null;
+  const remoteLines = mapRemoteLines(remote.lines);
+
+  if (existing) {
+    const keepPending =
+      existing.syncStatus === "pending" || existing.syncStatus === "error";
+    await db.sales.put({
+      ...existing,
+      soldAt: remote.sold_at || existing.soldAt,
+      subtotal: moneyToPesos(remote.subtotal),
+      tax: moneyToPesos(remote.tax),
+      total: moneyToPesos(remote.total),
+      paymentMethod: asPaymentMethod(remote.payment_method),
+      cashReceivedPesos:
+        remote.cash_received === null
+          ? existing.cashReceivedPesos
+          : moneyToPesos(remote.cash_received),
+      invoiceNumber,
+      invoiceStatus: keepPending ? existing.invoiceStatus : invoiceStatus,
+      serverInvoiceStatus: invoiceStatus,
+      syncStatus: keepPending ? existing.syncStatus : "synced",
+      lines:
+        remoteLines.length > 0
+          ? remoteLines
+          : existing.lines.length > 0
+            ? existing.lines
+            : [],
+    });
+    return;
+  }
+
+  const sale: LocalSale = {
+    id: remote.id,
+    internalNumber: remote.internal_number,
+    soldAt: remote.sold_at,
+    lines: remoteLines,
+    subtotal: moneyToPesos(remote.subtotal),
+    tax: moneyToPesos(remote.tax),
+    total: moneyToPesos(remote.total),
+    paymentMethod: asPaymentMethod(remote.payment_method),
+    cashReceivedPesos:
+      remote.cash_received === null
+        ? null
+        : moneyToPesos(remote.cash_received),
+    changePesos: null,
+    customerMode: remote.customer_id ? "named" : "final",
+    customer: null,
+    invoiceStatus,
+    syncStatus: "synced",
+    invoiceNumber,
+    serverInvoiceStatus: invoiceStatus,
+  };
+  await db.sales.put(sale);
+}
+
+/** Invoices that still need to reach the DIAN (pending/sent or unsynced). */
+export async function countRetryInvoices(): Promise<number> {
+  const sales = await listLocalSales();
+  return sales.filter(needsRetry).length;
+}
+
+export function needsRetry(sale: LocalSale): boolean {
+  if (sale.syncStatus === "pending" || sale.syncStatus === "error") {
+    return true;
+  }
+  const status = sale.serverInvoiceStatus ?? sale.invoiceStatus;
+  return status === "pending" || status === "sent";
+}
+
+export function displayInvoiceStatus(
+  sale: LocalSale,
+): "accepted" | "pending" | "rejected" {
+  if (sale.syncStatus === "pending" || sale.syncStatus === "error") {
+    return "pending";
+  }
+  const status = sale.serverInvoiceStatus ?? sale.invoiceStatus;
+  if (status === "accepted") return "accepted";
+  if (status === "rejected") return "rejected";
+  return "pending";
 }

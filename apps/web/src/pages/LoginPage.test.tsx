@@ -1,15 +1,44 @@
+import "fake-indexeddb/auto";
+
 import { cleanup, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { setSession } from "@/auth/api";
 import { loadProfile } from "@/auth/profileStore";
+import { db } from "@/db/schema";
 import type { FetchHandler } from "@/test/fetchMock";
 import { installFetch, jsonResponse, tokenResponse } from "@/test/fetchMock";
 import { renderApp } from "@/test/renderApp";
 
 const INVALID =
   "Usuario o contraseña incorrectos. Revísalos e intenta de nuevo.";
+
+const emptySummary = {
+  period: "day",
+  from_date: "2026-11-21",
+  to_date: "2026-11-21",
+  total: "0",
+  sale_count: 0,
+  average_ticket: "0",
+  previous_total: "0",
+  invoices_accepted: 0,
+  invoices_total: 0,
+  daily: [],
+};
+
+function homeApiExtras(path: string): Response | null {
+  if (path.startsWith("/sales")) {
+    return jsonResponse(200, []);
+  }
+  if (path.startsWith("/stats/top-products")) {
+    return jsonResponse(200, []);
+  }
+  if (path.startsWith("/stats")) {
+    return jsonResponse(200, emptySummary);
+  }
+  return null;
+}
 
 function anonymousApi(onLogin: FetchHandler): FetchHandler {
   return (path, init) => {
@@ -19,6 +48,8 @@ function anonymousApi(onLogin: FetchHandler): FetchHandler {
     if (path === "/auth/login") {
       return onLogin(path, init);
     }
+    const home = homeApiExtras(path);
+    if (home) return home;
     return jsonResponse(204);
   };
 }
@@ -30,6 +61,11 @@ async function fillAndSubmit(username: string, password: string) {
   await user.click(screen.getByRole("button", { name: "Entrar" }));
   return user;
 }
+
+beforeEach(async () => {
+  await db.delete();
+  await db.open();
+});
 
 afterEach(() => {
   cleanup();
@@ -74,7 +110,10 @@ describe("LoginPage", () => {
 
     await fillAndSubmit("luisa", "clave-123");
 
-    expect(await screen.findByText("Hola, Luisa")).toBeInTheDocument();
+    expect(
+      await screen.findByRole("button", { name: /Nueva venta/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Ventas de hoy")).toBeInTheDocument();
     const loginCall = fetchMock.mock.calls.find(([url]) =>
       String(url).endsWith("/auth/login"),
     );
@@ -98,7 +137,9 @@ describe("LoginPage", () => {
 
     await fillAndSubmit("luisa", "clave-123");
 
-    expect(await screen.findByText("Hola, Luisa")).toBeInTheDocument();
+    expect(
+      await screen.findByRole("button", { name: /Nueva venta/i }),
+    ).toBeInTheDocument();
     const loginCall = fetchMock.mock.calls.find(([url]) =>
       String(url).endsWith("/auth/login"),
     );
@@ -185,18 +226,26 @@ describe("LoginPage", () => {
     ).toBeInTheDocument();
   });
 
-  it("logs out from the home and returns to login", async () => {
-    installFetch((path) =>
-      path === "/auth/refresh"
-        ? jsonResponse(200, tokenResponse())
-        : jsonResponse(204),
-    );
-    await renderApp("/");
-    expect(screen.getByText("Hola, Luisa")).toBeInTheDocument();
+  it("logs out from Más and returns to login", async () => {
+    installFetch((path) => {
+      if (path === "/auth/refresh") {
+        return jsonResponse(200, tokenResponse());
+      }
+      if (path === "/auth/logout") {
+        return jsonResponse(204);
+      }
+      const home = homeApiExtras(path);
+      if (home) return home;
+      return jsonResponse(204);
+    });
+    await renderApp("/mas");
+    expect(
+      await screen.findByRole("heading", { name: "Más" }),
+    ).toBeInTheDocument();
 
     await userEvent
       .setup()
-      .click(screen.getByRole("button", { name: "Cerrar sesión" }));
+      .click(screen.getByRole("button", { name: /Cerrar sesión/i }));
 
     expect(
       await screen.findByRole("heading", { name: "Iniciar sesión" }),

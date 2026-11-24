@@ -1,9 +1,11 @@
 import { Route, Routes } from "react-router-dom";
 
 import { LOGIN_PATH, RequireAuth } from "@/auth/RequireAuth";
+import { ClosingPage } from "@/pages/ClosingPage";
 import { ComponentesDevPage } from "@/pages/ComponentesDevPage";
 import { HomePage } from "@/pages/HomePage";
 import { LoginPage, RECOVER_PATH } from "@/pages/LoginPage";
+import { MorePage } from "@/pages/MorePage";
 import { ProductFormPage } from "@/pages/products/ProductFormPage";
 import { ProductsPage } from "@/pages/products/ProductsPage";
 import { RecoverPasswordPage } from "@/pages/RecoverPasswordPage";
@@ -12,6 +14,7 @@ import { CustomerPage } from "@/pages/sale/CustomerPage";
 import { SaleDonePage } from "@/pages/sale/SaleDonePage";
 import { SalePage } from "@/pages/sale/SalePage";
 import { WeightPage } from "@/pages/sale/WeightPage";
+import { VentasPage } from "@/pages/VentasPage";
 
 export function App() {
   return (
@@ -30,6 +33,9 @@ export function App() {
           path="/productos/:id/editar"
           element={<ProductFormPage mode="edit" />}
         />
+        <Route path="/ventas" element={<VentasPage />} />
+        <Route path="/mas" element={<MorePage />} />
+        <Route path="/cierre" element={<ClosingPage />} />
         <Route path="/venta" element={<SalePage />} />
         <Route path="/venta/peso/:productId" element={<WeightPage />} />
         <Route path="/venta/cobrar" element={<CheckoutPage />} />

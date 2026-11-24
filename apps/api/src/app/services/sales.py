@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import uuid
-from datetime import UTC, date, datetime, time, timedelta
+from datetime import date
 
 from fastapi import HTTPException, status
 from sqlalchemy import select
@@ -21,6 +21,7 @@ from app.models import (
     User,
 )
 from app.schemas.sale import SaleCreate, SaleCustomerIn
+from app.timeutil import day_bounds
 
 DOC_TYPE_MAP = {"cc": "CC", "nit": "NIT", "other": "OTHER"}
 
@@ -64,12 +65,10 @@ def list_sales(
         .order_by(Sale.sold_at.desc())
     )
     if from_date is not None:
-        start = datetime.combine(from_date, time.min, tzinfo=UTC)
+        start, _ = day_bounds(from_date)
         stmt = stmt.where(Sale.sold_at >= start)
     if to_date is not None:
-        end = datetime.combine(
-            to_date + timedelta(days=1), time.min, tzinfo=UTC
-        )
+        _, end = day_bounds(to_date)
         stmt = stmt.where(Sale.sold_at < end)
     if invoice_status is not None:
         stmt = stmt.join(Invoice).where(

@@ -80,6 +80,22 @@ export function formatShortDate(date: Date): string {
   return `${cleanWeekday} ${day} ${month.replace(/\.$/, "")}`.trim();
 }
 
+const longDateFormatter = new Intl.DateTimeFormat("es-CO", {
+  timeZone: "America/Bogota",
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+});
+
+/** Formats long date as `Sábado, 21 de noviembre`. */
+export function formatLongDate(date: Date): string {
+  const parts = longDateFormatter.formatToParts(date);
+  const weekday = parts.find((p) => p.type === "weekday")?.value ?? "";
+  const day = parts.find((p) => p.type === "day")?.value ?? "";
+  const month = parts.find((p) => p.type === "month")?.value ?? "";
+  return `${capitalize(weekday)}, ${day} de ${month}`;
+}
+
 /** Formats invoice consecutive as `FE-0231`. */
 export function formatInvoiceNumber(
   consecutive: number | string,
